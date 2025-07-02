@@ -3,8 +3,8 @@ const { spawn, execSync } = require('child_process');
 export async function runCommands() {
   let ret = [];
   try {
-    console.log('执行 ps -ef:');
-    ret.push(execSync('ps -ef').toString());
+    // console.log('执行 ps -ef:');
+    // ret.push(execSync('ps -ef').toString());
 
     console.log('\n执行 ls -l:');
     ret.push(execSync('ls -l').toString());
