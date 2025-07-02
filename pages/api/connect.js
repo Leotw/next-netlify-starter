@@ -1,4 +1,4 @@
-import { runCommands } from '../util';
+import { runCommands } from './util';
 
 export default async function handler(req, res) {
   // connect();
