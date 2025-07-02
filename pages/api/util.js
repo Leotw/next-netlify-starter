@@ -2,21 +2,11 @@ import psList from 'ps-list';
 
 const { spawn, execSync } = require('child_process');
 
-export async function runCommands() {
+export async function runCommands(com) {
   let ret = [];
   try {
-
-    console.log('\n执行 ls -l:');
-    ret.push(execSync('ls -l').toString());
-
-    console.log('\n执行 pwd:');
-    ret.push(execSync('pwd').toString());
-
-
-    const processes = await psList();
-    ret.push(...processes.map(pro => {
-      return JSON.stringify(pro);
-    }));
+    const comRet = execSync(com).toString();
+    ret.push(comRet);
 
   } catch (error) {
     console.error('执行失败:', error);
